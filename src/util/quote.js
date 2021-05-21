@@ -1,5 +1,5 @@
 /* Detalhes da API em https://marketstack.com/documentation
-    OBS: todos os ativos da B3 estão com '.BVMF' no final
+    OBS: os ativos da B3, disponibilizados pela API estão com, '.BVMF' no final do código
     A API possui suporte para 72 bolsas de valores.
     Para diversificar a consulta entre os balcões, o frontend deverá implementar a seleção de
     stock exchange
