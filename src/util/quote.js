@@ -7,10 +7,7 @@
 
 const request = require("request");
 
-// Checking application environment (dev/prod)
-const api_token =
-  process.env.STOCK_KEY ||
-  require("dotenv").config({ path: __dirname + "/.env" }).parsed["STOCK_KEY"];
+const api_token = process.env.STOCK_KEY;
 
 const quote = (symbol, callback) => {
   const url = `http://api.marketstack.com/v1/eod/latest?symbols=${

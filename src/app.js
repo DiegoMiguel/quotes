@@ -15,9 +15,4 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicPath))
 app.use(routes)
 
-// Checking application environment (dev/prod)
-const port = process.env.PORT ||3000
-
-app.listen(port, () => {
-    console.log(`Server up on port ${port}!`)
-})
+module.exports = app
