@@ -1,39 +1,25 @@
-console.log('javascript no frontend')
+import router from "./modules/util/routes.js";
+import quote from "./modules/util/quote.js";
 
-const quotesForm = document.querySelector('form')
-const mainMensage = document.querySelector('h3')
-const price = document.querySelector('#price')
-const price_open = document.querySelector('#open')
-const day_high = document.querySelector('#high')
-const day_low = document.querySelector('#low')
+const quotesForm = document.querySelector("form");
 
-quotesForm.addEventListener('submit', (event) => {
-    mainMensage.innerText = 'buscando...'
-    
-    event.preventDefault()
-    const stockCode = document.querySelector('input').value
+quotesForm.onsubmit = (event) => {
+  event.preventDefault();
+  quote();
+};
 
-    if(!stockCode){
-        mainMensage.innerText = 'O ativo deve ser informado'
-        price.innerHTML = "";
-        price_open.innerHTML = "";
-        day_high.innerHTML = "";
-        day_low.innerHTML = "";
-        return;
-    }
-    
-    fetch(`/quotes?stockCode=${stockCode}`).then((response) => {
-        response.json().then((data) => {
-            if(data.error){
-                mainMensage.innerText = `Consulta indisponível` 
-                price.innerHTML =  `${data.error.mensage} | código ${data.error.code}`
-            }else{
-                mainMensage.innerText = data.symbol
-                price.innerHTML =  `PRICE: ${data.close}`
-                price_open.innerHTML =  `OPEN: ${data.open}`
-                day_high.innerHTML =  `HIGH: ${data.high}`
-                day_low.innerHTML =  `LOW: ${data.low}`
-            }
-        })
+document.querySelectorAll("nav a").forEach(
+  (a) =>
+    (a.onclick = (event) => {
+      event.preventDefault();
+      router(event.target.pathname);
     })
-})
+);
+
+window.onload = () => {
+  history.replaceState(
+    { path: document.location.pathname },
+    "",
+    document.location.href
+  );
+};
