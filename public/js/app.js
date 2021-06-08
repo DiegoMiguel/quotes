@@ -1,39 +1,46 @@
-console.log('javascript no frontend')
+import { render, contains } from "./modules/util/routes.js";
+import quote from "./modules/util/quote.js";
 
-const quotesForm = document.querySelector('form')
-const mainMensage = document.querySelector('h3')
-const price = document.querySelector('#price')
-const price_open = document.querySelector('#open')
-const day_high = document.querySelector('#high')
-const day_low = document.querySelector('#low')
+document.querySelectorAll("nav a").forEach((a) => {
+  a.onclick = (event) => {
+    event.preventDefault();
 
-quotesForm.addEventListener('submit', (event) => {
-    mainMensage.innerText = 'buscando...'
-    
-    event.preventDefault()
-    const stockCode = document.querySelector('input').value
+    let currentPath = history.state.path,
+      selected = event.target,
+      destinyPath = selected.pathname;
 
-    if(!stockCode){
-        mainMensage.innerText = 'O ativo deve ser informado'
-        price.innerHTML = "";
-        price_open.innerHTML = "";
-        day_high.innerHTML = "";
-        day_low.innerHTML = "";
-        return;
+    if (currentPath != destinyPath) {
+      document.querySelector('nav a[class="selected"]').className = "";
+      selected.className = "selected";
+
+      render(destinyPath);
+      window.history.pushState({ path: destinyPath }, "", `${destinyPath}`);
     }
-    
-    fetch(`/quotes?stockCode=${stockCode}`).then((response) => {
-        response.json().then((data) => {
-            if(data.error){
-                mainMensage.innerText = `Consulta indisponível` 
-                price.innerHTML =  `${data.error.mensage} | código ${data.error.code}`
-            }else{
-                mainMensage.innerText = data.symbol
-                price.innerHTML =  `PRICE: ${data.close}`
-                price_open.innerHTML =  `OPEN: ${data.open}`
-                day_high.innerHTML =  `HIGH: ${data.high}`
-                day_low.innerHTML =  `LOW: ${data.low}`
-            }
-        })
-    })
-})
+  };
+});
+
+window.onload = () => {
+  let path = document.location.pathname;
+
+  if (path == "/") {
+    document.querySelector("form").onsubmit = (event) => {
+      event.preventDefault();
+      quote();
+    };
+  }
+
+  if (contains(path)) {
+    document.querySelector(`nav a[href="${path}"]`).className = "selected";
+  }
+
+  history.replaceState({ path }, "", document.location.href);
+};
+
+window.onpopstate = (event) => {
+  let destinyPath = event.state.path;
+
+  document.querySelector('nav a[class="selected"]').className = "";
+  document.querySelector(`nav a[href="${destinyPath}"]`).className = "selected";
+
+  render(destinyPath);
+};

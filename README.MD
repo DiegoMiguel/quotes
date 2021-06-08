@@ -2,7 +2,7 @@
 <https://quotesstock.herokuapp.com/>
 
 ## REQUISITOS
-* NODEJS e NPM
+* NODEJS
 
 ## EXECUÇÃO LOCAL
 1. **Instale as dependências**: `npm install`
