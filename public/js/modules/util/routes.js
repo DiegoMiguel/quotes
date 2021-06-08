@@ -1,28 +1,31 @@
-import about from '../pages/about.js'
-import help from '../pages/help.js'
-import home from '../pages/home.js'
+import about from "../pages/about.js";
+import help from "../pages/help.js";
+import home from "../pages/home.js";
+import quote from "./quote.js";
 
-const contents = {
-    '/': home,
-    '/about': about,
-    '/help': help
+const routes = {
+  "/": home,
+  "/about": about,
+  "/help": help,
 };
 
-const router = (destinyPath) => {
-    let currentPath = history.state.path;
+function render(pagePath) {
+  let title = document.getElementById("page-title");
+  let main = document.querySelector("main");
 
-    if (currentPath != destinyPath) {
-        render(destinyPath)
-        window.history.pushState({path: destinyPath}, "", `${destinyPath}`);
-    }
+  title.innerHTML = routes[pagePath].title;
+  main.innerHTML = routes[pagePath].content;
+
+  if (pagePath == "/") {
+    document.querySelector("form").onsubmit = (event) => {
+      event.preventDefault();
+      quote();
+    };
+  }
 }
 
-const render = (pagePath) => {
-    let title = document.getElementById('page-title');
-    let main = document.querySelector('main');
-
-    title.innerHTML = contents[pagePath].title;
-    main.innerHTML = contents[pagePath].content;
+function contains(path) {
+  return !!routes[path];
 }
 
-export default router;
+export { render, contains };

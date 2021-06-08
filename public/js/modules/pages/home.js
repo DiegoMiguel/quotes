@@ -2,7 +2,7 @@ const home = {
     content: `<p>Procure por um ativo</p>
     
         <form>
-            <input type="text" placeholder="Código do ativo">
+            <input type="text" placeholder="Código do ativo (ex: PETR4)">
             <button>Buscar</button>
         </form>
     
