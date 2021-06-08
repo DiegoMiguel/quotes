@@ -10,7 +10,9 @@ document.querySelectorAll("nav a").forEach((a) => {
       destinyPath = selected.pathname;
 
     if (currentPath != destinyPath) {
-      document.querySelector('nav a[class="selected"]').className = "";
+      if (contains(currentPath)) {
+        document.querySelector(`nav a[href="${currentPath}"]`).className = "";
+      }
       selected.className = "selected";
 
       render(destinyPath);
@@ -39,8 +41,16 @@ window.onload = () => {
 window.onpopstate = (event) => {
   let destinyPath = event.state.path;
 
-  document.querySelector('nav a[class="selected"]').className = "";
-  document.querySelector(`nav a[href="${destinyPath}"]`).className = "selected";
+  if (contains(destinyPath)) {
+    document.querySelector('nav a[class="selected"]').className = "";
+    document.querySelector(`nav a[href="${destinyPath}"]`).className = "selected";
+    render(destinyPath);
+  }
+  else {
+    document.querySelector('nav a[class="selected"]').className = "";
+    document.querySelector(`nav a[href="/"]`).className = "selected";
+    render('/');
 
-  render(destinyPath);
+    window.history.pushState({ path: '/' }, "", `${'/'}`);
+  }
 };
